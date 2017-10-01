@@ -20,7 +20,7 @@
                             <form action="{{route('user_show', ['id'=>$user->id])}}" method="post">
                                 {{ csrf_field() }}
                                 <button type="submit"
-                                        class="user_profile_link_btn">{{$user->last_name }} {{$user->first_name}}</button>
+                                        class="user_profile_link_btn">{{$user->first_name}} {{$user->last_name }}</button>
                             </form>
                         </td>
                         <td>
@@ -32,7 +32,7 @@
                         </td>
                         <td>{{$user->phone}}</td>
                         <td>{{$user->roles()->pluck('role')->first()}}</td>
-                        <td style="background: {{$user->color}}"></td>
+                        <td style="background: {{$user->hexColor()}}"></td>
                     </tr>
                 @endforeach
                 </tbody>

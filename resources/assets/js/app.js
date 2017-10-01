@@ -26,8 +26,7 @@ const app = new Vue({
 
 function colorSelectBackground() {
     var selectInput = $('#create_user_color_select');
-    var selectedColor = selectInput.find(":selected").val();
-
+    var selectedColor = selectInput.find(":selected").attr('data-hex');
     selectInput.css('background', selectedColor);
 }
 

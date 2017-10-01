@@ -19,33 +19,16 @@ class CreateRolesTable extends Migration {
 			$table->enum('role', ['admin', 'manager', 'member', 'temp']);
 		});
 
-		DB::table('roles')->insert(
+		$roles = collect(['admin', 'manager', 'member', 'temp']);
 
-			array(
-				'role' => 'admin'
-			)
-		);
+		foreach($roles as $role) {
+			DB::table('roles')->insert(
 
-		DB::table('roles')->insert(
-
-			array(
-				'role' => 'manager'
-			)
-		);
-
-		DB::table('roles')->insert(
-
-			array(
-				'role' => 'member'
-			)
-		);
-
-		DB::table('roles')->insert(
-
-			array(
-				'role' => 'temp'
-			)
-		);
+				[
+					'role' => $role
+				]
+			);
+		}
 	}
 
 	/**

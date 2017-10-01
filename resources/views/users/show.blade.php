@@ -23,7 +23,7 @@
             </h5>
         </div>
 
-        <div class="user_color_block" style="background: {{$user->color}}">
+        <div class="user_color_block" style="background: {{$user->hexColor()}}">
 
         </div>
         @foreach ($user->shifts as $key=>$shift)

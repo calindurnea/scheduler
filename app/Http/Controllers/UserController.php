@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Color;
 use App\Http\Requests\CheckIdRequest;
 use App\Http\Requests\CreateNewUserRequest;
 use App\Role;
 use App\User;
-use function bcrypt;
 use function compact;
-use function dd;
-use function rand;
-use function str_random;
 use function view;
 
 class UserController extends Controller {
@@ -33,15 +30,10 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-		$colors = collect([
-			'#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3',
-			'#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B',
-			'#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'
-		]);
-
+		$colors = Color::available()->get();
 		$roles = Role::where('role', '!=', 'admin')->get()->reverse();
 
-		return view('users.create', compact(['colors', 'roles']));
+		return view('users.create', compact(['roles', 'colors']));
 	}
 
 	/**
@@ -55,14 +47,18 @@ class UserController extends Controller {
 			'first_name' => $request->first_name,
 			'last_name'  => $request->last_name,
 			'phone'      => $request->phone,
-			'color'      => $request->color,
+			'color_id'   => $request->color,
 			'email'      => $request->email ? $request->email : $request->first_name . rand(999, 99999) . '@undefined.' . str_random(3),
 			'password'   => bcrypt($request->first_name),
 		]);
 
 		$user->roles()->attach($request->role);
 
+		$color = Color::find($request->color);
+		$color->used = true;
+
 		$user->save();
+		$color->save();
 
 		alert('Member successfully added! <br> <a href="/users"><button class="btn">Return home</button></a> <a href="#" onclick="swal.closeModal(); return false;"><button class="btn">Add more</button></a>')->html()->autoclose(5000);
 
@@ -88,7 +84,7 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit() {
-		dd(1);
+		return view('users.edit');
 	}
 
 	/**
