@@ -1,0 +1,93 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+// Variables
+@import "variables";
+// Media queries
+@import "~sass-mediaqueries/media-queries";
+// Bootstrap
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+// Bootstrap table
+@import "~bootstrap-table/dist/bootstrap-table.css";
+// Sweet alert
+//@import "~sweetalert/src/sweetalert.css";
+
+.users-table {
+  margin-top: 30px;
+  td {
+    padding: 10px !important;
+    &:hover {
+      background: rgba(91, 192, 222, .2);
+    }
+  }
+}
+
+.user_profile_link_btn {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.user_profile_email_btn {
+  width: 100%;
+  display: block;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.create_user_form_container {
+  .form-group {
+    display: flex;
+    justify-content: center;
+  }
+  button {
+    margin-top: 25px;
+    width: 150px;
+  }
+  @include max-screen(700px) {
+    button {
+      width: 200px;
+    }
+  }
+}
+
+#add_user_title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.user_span_position {
+  opacity: .5;
+  font-size: 16px;
+}
+
+.user_details_block {
+  display: inline-block;
+  h5{
+    div{
+      display: inline-block;
+    }
+  }
+}
+
+.user_color_block {
+  display: inline-block;
+  margin-left: 15px;
+  width: 50px;
+  height: 25px;
+  border-radius: 5px;
+}
+@include max-screen(540px){
+  .user_color_block{
+    display: block;
+  }
+  .user_details_block{
+    h5{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
