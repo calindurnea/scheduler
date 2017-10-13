@@ -18,16 +18,37 @@ class ShiftController extends Controller {
 		return view('shift.index');
 	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create() {
+		//
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(NewShiftRequest $request) {
+		$user = User::where('email', '=', $request->email)->first();
+
+		try {
+			$shift = new Shift;
+			$shift->start = $request->start;
+			$shift->duration = $request->end;
+			$user->shifts()->save($shift);
+		} catch(\Exception $e) {
+			//$e->getMessage()   -> for error message
+			return response()->json([], 500);
+		}
+
+		return response()->json([], 200);
+	}
+
 
     /**
      * Display the specified resource.
