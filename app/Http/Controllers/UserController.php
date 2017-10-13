@@ -19,9 +19,9 @@ class UserController extends Controller {
 	 */
 	public function index() {
 		//
-		$users = User::withRoles(['member', 'temp', 'manager'])->get();
 
-		return view('users.index', compact('users'));
+
+		return view('users.index');
 	}
 
 	/**
@@ -83,8 +83,10 @@ class UserController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit() {
-		return view('users.edit');
+	public function edit(CheckIdRequest $request) {
+//		$user = User::find($request->id);
+//
+//		return response()->json(['response' => $user], 200);
 	}
 
 	/**
