@@ -1,48 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="table-responsive col-md-8 col-md-offset-2">
-            <table class="table-hover table table-bordered users-table">
-                <thead>
-                <tr>
-                    <th>name</th>
-                    <th>email</th>
-                    <th>phone</th>
-                    <th>role</th>
-                    <th>color</th>
+    <h1 class="mt-4 center_title">Employees</h1>
+    <div class="col-md-8 col-xs-12 col-sm-12 mt-4 mx-auto">
+        <table class="table table-bordered table-hover table-responsive employees-table">
+            <thead class="thead-inverse">
+            <tr>
+                <th>name</th>
+                <th>email</th>
+                <th>phone</th>
+                <th>role</th>
+                <th>color</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($users as $user)
+                <tr onclick="event.preventDefault(); document.getElementById('user-profile-form-{{$user->id}}').submit();">
+                    <td class="" scope="row">{{$user->first_name}} {{$user->last_name}}
+                        <form action="{{route('users_show', ['id'=>$user->id])}}" id="user-profile-form-{{$user->id}}"
+                              method="post" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->phone}}</td>
+                    <td>{{$user->roles()->pluck('role')->first()}}</td>
+                    <td style="background: {{$user->hexColor()}}"></td>
                 </tr>
-                </thead>
-                <tbody>
-                @foreach($users as $user)
-                    <tr>
-                        <td class="user_profile_link_td">
-                            <form action="{{route('user_show', ['id'=>$user->id])}}" method="post">
-                                {{ csrf_field() }}
-                                <button type="submit"
-                                        class="user_profile_link_btn">{{$user->first_name}} {{$user->last_name }}</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="{{route('user_show', ['id'=>$user->id])}}" method="post">
-                                {{ csrf_field() }}
-                                <button type="submit"
-                                        class="user_profile_link_btn">{{$user->email }}</button>
-                            </form>
-                        </td>
-                        <td>{{$user->phone}}</td>
-                        <td>{{$user->roles()->pluck('role')->first()}}</td>
-                        <td style="background: {{$user->hexColor()}}"></td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-10">
-            <a href="user/create">
-                <button class="pull-right btn btn-primary">Add person</button>
-            </a>
-        </div>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <a href="user/create">
+            <button class="pull-right btn btn-primary">Add person</button>
+        </a>
     </div>
 
 @endsection
