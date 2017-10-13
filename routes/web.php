@@ -17,11 +17,13 @@ Route::get('/', function() {
 
 Auth::routes();
 
-Route::get('/users', ['as' => 'users_show', 'uses' => 'UserController@index']);
-Route::post('/user', ['as' => 'user_show', 'uses' => 'UserController@show']);
+Route::get('/users', ['as' => 'users_get', 'uses' => 'UserController@index']);
+Route::post('/user', ['as' => 'users_show', 'uses' => 'UserController@show']);
 
-Route::get('/user/create', ['as' => 'user_create', 'uses' => 'UserController@create']);
-Route::post('/user/store', ['as' => 'user_store', 'uses' => 'UserController@store']);
+Route::get('/users/create', ['as' => 'users_create', 'uses' => 'UserController@create']);
+Route::post('/users/store', ['as' => 'users_store', 'uses' => 'UserController@store']);
+//Route::post('/user/edit', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
+//Route::post('/user/update', ['as' => 'user_update', 'uses' => 'UserController@update']);
 
 Route::post('/user/edit', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
 
