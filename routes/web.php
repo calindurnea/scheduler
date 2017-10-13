@@ -29,4 +29,7 @@ Route::get('/shifts', ['as' => 'shifts_get', 'uses' => 'ShiftController@index'])
 Route::post('/shifts/show', ['as' => 'shifts_show', 'uses' => 'ShiftController@show']);
 Route::post('/shifts/store', ['as' => 'shifts_store', 'uses' => 'ShiftController@store']);
 
-Route::get('/schedule', ['as' => 'schedule_show', 'uses' => 'ShiftController@index']);
+Route::get('/schedule', ['as' => 'schedule_get', 'uses' => 'ScheduleController@index']);
+
+//Route::get('/schedule/edit', ['as' => 'schedule_edit', 'uses' => 'ScheduleController@edit']);
+//Route::post('/schedule/update', ['as' => 'schedule_update', 'uses' => 'ScheduleController@update']);
