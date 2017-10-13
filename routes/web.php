@@ -25,6 +25,8 @@ Route::post('/users/store', ['as' => 'users_store', 'uses' => 'UserController@st
 //Route::post('/user/edit', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
 //Route::post('/user/update', ['as' => 'user_update', 'uses' => 'UserController@update']);
 
-Route::post('/user/edit', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
+Route::get('/shifts', ['as' => 'shifts_get', 'uses' => 'ShiftController@index']);
+Route::post('/shifts/show', ['as' => 'shifts_show', 'uses' => 'ShiftController@show']);
+Route::post('/shifts/store', ['as' => 'shifts_store', 'uses' => 'ShiftController@store']);
 
 Route::get('/schedule', ['as' => 'schedule_show', 'uses' => 'ShiftController@index']);
