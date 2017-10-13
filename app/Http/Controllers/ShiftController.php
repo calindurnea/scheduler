@@ -2,30 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewShiftRequest;
+use App\Shift;
+use App\User;
 use Illuminate\Http\Request;
-use function view;
 
-class ShiftController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('schedule.index');
-    }
+class ShiftController extends Controller {
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index() {
+		return view('shift.index');
+	}
 
     /**
      * Store a newly created resource in storage.
