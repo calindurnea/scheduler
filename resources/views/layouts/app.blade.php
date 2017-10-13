@@ -5,13 +5,15 @@
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-default navbar-static-top">
-        @include('layouts.nav.nav')
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        @include('layouts.nav')
     </nav>
-
-    @yield('content')
+    <div class="container-fluid">
+        @yield('content')
+    </div>
 </div>
 
 @include('layouts.scripts')
+@yield('pageScripts')
 </body>
 </html>

@@ -1,42 +1,17 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 // Variables
-@import "variables";
+//@import "variables";
 // Media queries
 @import "~sass-mediaqueries/media-queries";
 // Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap.scss";
 // Bootstrap table
 @import "~bootstrap-table/dist/bootstrap-table.css";
 // Sweet alert
 //@import "~sweetalert/src/sweetalert.css";
+@import "~fullcalendar/dist/fullcalendar.css";
 
-.users-table {
-  margin-top: 30px;
-  td {
-    padding: 10px !important;
-    &:hover {
-      background: rgba(91, 192, 222, .2);
-    }
-  }
-}
-
-.user_profile_link_btn {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  border: none;
-  width: 100%;
-  text-align: left;
-}
-
-.user_profile_email_btn {
-  width: 100%;
-  display: block;
-  &:hover {
-    text-decoration: none;
-  }
-}
 
 .create_user_form_container {
   .form-group {
@@ -54,7 +29,7 @@
   }
 }
 
-#add_user_title {
+.center_title {
   text-align: center;
   margin-bottom: 50px;
 }
@@ -66,8 +41,8 @@
 
 .user_details_block {
   display: inline-block;
-  h5{
-    div{
+  h5 {
+    div {
       display: inline-block;
     }
   }
@@ -80,14 +55,27 @@
   height: 25px;
   border-radius: 5px;
 }
-@include max-screen(540px){
-  .user_color_block{
+
+.employees-table tbody tr {
+  cursor: pointer;
+}
+
+@include max-screen(540px) {
+  .user_color_block {
     display: block;
   }
-  .user_details_block{
-    h5{
+  .user_details_block {
+    h5 {
       display: flex;
       flex-direction: column;
     }
   }
+}
+
+#calendar{
+  margin-top: 50px;
+}
+
+.fc-ltr .fc-time-grid .fc-event-container { /* space on the sides of events for LTR (default) */
+  margin: 0 20% 0 0;
 }

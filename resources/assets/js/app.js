@@ -4,11 +4,16 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+window.Popper = require('popper.js').default;
+require('popper.js');
+
+require('bootstrap');
 
 require('bootstrap-table/dist/bootstrap-table');
 
 require('sweetalert/dist/sweetalert.min');
+
+require('sweetalert2/dist/sweetalert2.all.min');
 
 window.Vue = require('vue');
 
@@ -24,10 +29,33 @@ const app = new Vue({
     el: '#app'
 });
 
-function colorSelectBackground() {
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+//change color input field background color on select
+$('#create_user_color_select').change(function () {
     var selectInput = $('#create_user_color_select');
     var selectedColor = selectInput.find(":selected").attr('data-hex');
     selectInput.css('background', selectedColor);
-}
+});
 
-$('#create_user_color_select').change(colorSelectBackground);
+//add table-sm class to tables on small devices
+$(document).ready(function ($) {
+    var addClass = function () {
+        var ww = document.body.clientWidth;
+        if (ww < 631) {
+            $('.table').addClass('table-sm');
+        } else if (ww >= 631) {
+            $('.table').removeClass('table-sm');
+        }
+    };
+    $(window).resize(function () {
+        addClass();
+    });
+    //Fire it when the page first loads:
+    addClass();
+});
