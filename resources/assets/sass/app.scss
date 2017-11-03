@@ -1,5 +1,6 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:100,300,400,600');
 // Variables
 //@import "variables";
 // Media queries
@@ -12,6 +13,35 @@
 //@import "~sweetalert/src/sweetalert.css";
 @import "~fullcalendar/dist/fullcalendar.css";
 
+#welcome-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  @include max-screen(700px) {
+    flex-direction: column;
+  }
+}
+
+#welcome-title {
+  font-size: 5em;
+  @include max-screen(700px) {
+    font-size: 4em
+  }
+  @include max-screen(600px) {
+    font-size: 2em
+  }
+}
+
+#welcome-subtitle {
+  opacity: .3;
+  align-self: center;
+  font-weight: 300;
+  @include max-screen(600px) {
+    font-size: 1em;
+    align-self: flex-end;
+  }
+}
 
 .create_user_form_container {
   .form-group {
@@ -72,10 +102,36 @@
   }
 }
 
-#calendar{
+.color-list {
+  list-style: none;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  padding: 0;
+}
+
+.color-list-item {
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  margin: 5px;
+  text-align: center;
+}
+
+.delete-color-overlay {
+  background: #cccccc;
+  border-radius: 10px;
+}
+
+#calendar {
   margin-top: 50px;
 }
 
 .fc-ltr .fc-time-grid .fc-event-container { /* space on the sides of events for LTR (default) */
   margin: 0 20% 0 0;
+}
+
+#daterangepicker {
+  text-align: center;
 }
