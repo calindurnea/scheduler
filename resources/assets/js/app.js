@@ -15,6 +15,8 @@ require('sweetalert/dist/sweetalert.min');
 
 require('sweetalert2/dist/sweetalert2.all.min');
 
+require('jquery-color/jquery.color');
+
 window.Vue = require('vue');
 
 /**
@@ -35,6 +37,8 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
+
 
 //change color input field background color on select
 $('#create_user_color_select').change(function () {
