@@ -47,11 +47,16 @@ class User extends Authenticatable {
 	}
 
 	public function color() {
-		return $this->hasOne('App\Color', 'id', 'color_id');
+		return $this->hasOne('App\Color');
 	}
 
 	public function hexColor() {
-		return $this->color()->pluck('hexCode')->first();
+		$color = $this->color;
+
+		if($color){
+			return $color->hexCode;
+		}
+		return '#000000';
 	}
 
 	public function scopeWithRoles($query, array $name) {
