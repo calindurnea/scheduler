@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewShiftRequest;
+use App\Rules\IsSameDayRule;
 use App\Shift;
 use App\User;
 use Illuminate\Http\Request;
@@ -35,6 +36,11 @@ class ShiftController extends Controller {
 	 */
 	public function store(NewShiftRequest $request) {
 		$user = User::where('email', '=', $request->email)->first();
+
+		$this->validate($request, [
+			'start' => new IsSameDayRule($user),
+			'end'   => new IsSameDayRule($user),
+		]);
 
 		try {
 			$shift = new Shift;
