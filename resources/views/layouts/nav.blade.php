@@ -42,6 +42,10 @@
                               method="POST" style="display: none;">
                             {{ csrf_field() }}
                         </form>
+                        @managerOrAdmin
+                        <a class="dropdown-item" href="{{route('colors_get')}}">Edit colors</a>
+                        @endmanagerOrAdmin
+
                         <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
