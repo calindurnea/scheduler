@@ -15,37 +15,45 @@ class Shift extends Model {
 	];
 
 	protected $appends = [
-		'end', 'title', 'color', 'email'
+		'end', 'title', 'color', 'email',
+		'startDate', 'endDate'
 	];
 
 	protected $hidden = [
-		'user_id', 'created_at', 'updated_at', 'deleted_at', 'duration'
+		'user_id', 'created_at', 'updated_at', 'deleted_at', 'duration',
+		'startDate', 'endDate'
 	];
 
 	public function user() {
 		return $this->belongsTo('App\User');
 	}
 
+	public function getStartDateAttribute() {
+		return Carbon::parse($this->attributes['start'])->toDateString();
+	}
 	public function getEndAttribute() {
 		return Carbon::parse($this->attributes['start'])->addHours($this->attributes['duration'])->toDateTimeString();
 	}
+	public function getEndDateAttribute() {
+		return Carbon::parse($this->attributes['start'])->addHours($this->attributes['duration'])->toDateString();
+	}
 
 	public function getTitleAttribute() {
-		$user = $this->user();
-
-		return $user->pluck('first_name')->first() . ' ' . $user->pluck('last_name')->first();
+		return $this->user->first_name . ' ' . $this->user->last_name;
 	}
 
 	public function getColorAttribute() {
-		$hexColor = Color::where('id', '=', $this->user()->pluck('color_id')->first())
-			->pluck('hexCode')
-			->first();
+		$color = $this->user->color;
 
-		return $hexColor;
+		if($color){
+			return $color->hexCode;
+		}
+
+		return '#000000';
 	}
 
 	public function getEmailAttribute() {
-		return $this->user()->pluck('email')->first();
+		return $this->user->email;
 	}
 
 	public function setDurationAttribute($value) {
