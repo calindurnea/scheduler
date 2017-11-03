@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);/**
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@import url(https://fonts.googleapis.com/css?family=Josefin+Sans:100,300,400,600);/**
  * @author zhixin wen <wenzhixin2010@gmail.com>
  * version: 1.11.1
  * https://github.com/wenzhixin/bootstrap-table/
@@ -10993,6 +10993,59 @@ a.text-dark:hover {
   visibility: hidden !important;
 }
 
+#welcome-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 70vh;
+}
+
+@media only screen and (max-width: 700px) {
+  #welcome-container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
+#welcome-title {
+  font-size: 5em;
+}
+
+@media only screen and (max-width: 700px) {
+  #welcome-title {
+    font-size: 4em;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #welcome-title {
+    font-size: 2em;
+  }
+}
+
+#welcome-subtitle {
+  opacity: .3;
+  -ms-flex-item-align: center;
+      align-self: center;
+  font-weight: 300;
+}
+
+@media only screen and (max-width: 600px) {
+  #welcome-subtitle {
+    font-size: 1em;
+    -ms-flex-item-align: end;
+        align-self: flex-end;
+  }
+}
+
 .create_user_form_container .form-group {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -11059,6 +11112,34 @@ a.text-dark:hover {
   }
 }
 
+.color-list {
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 0;
+}
+
+.color-list-item {
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  margin: 5px;
+  text-align: center;
+}
+
+.delete-color-overlay {
+  background: #cccccc;
+  border-radius: 10px;
+}
+
 #calendar {
   margin-top: 50px;
 }
@@ -11066,5 +11147,9 @@ a.text-dark:hover {
 .fc-ltr .fc-time-grid .fc-event-container {
   /* space on the sides of events for LTR (default) */
   margin: 0 20% 0 0;
+}
+
+#daterangepicker {
+  text-align: center;
 }
 
