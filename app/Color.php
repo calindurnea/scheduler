@@ -10,7 +10,7 @@ class Color extends Model {
 	use SoftDeletes;
 
 	protected $fillable = [
-		'hexCode'
+		'hexCode', 'user_id'
 	];
 
 	protected $hidden = [
@@ -22,7 +22,6 @@ class Color extends Model {
 	}
 
 	public function scopeAvailable($query) {
-		return $query->where('used', 0);
+		return $query->where('user_id', null);
 	}
-
 }

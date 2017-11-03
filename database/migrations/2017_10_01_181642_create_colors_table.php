@@ -17,6 +17,9 @@ class CreateColorsTable extends Migration {
 
 			$table->char('hexCode', 7)->unique();
 
+			$table->integer('user_id')->unsigned()->unique()->nullable();
+			$table->foreign('user_id')->references('id')->on('users');
+
 			$table->softDeletes();
 			$table->timestamps();
 		});
