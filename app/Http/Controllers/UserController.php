@@ -6,8 +6,10 @@ use App\Color;
 use App\Http\Requests\CheckIdRequest;
 use App\Http\Requests\CreateNewUserRequest;
 use App\Role;
+use App\Shift;
 use App\User;
 use function compact;
+use function preg_replace;
 use function view;
 
 class UserController extends Controller {
@@ -18,9 +20,6 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		//
-
-
 		return view('users.index');
 	}
 
@@ -30,10 +29,9 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-		$colors = Color::available()->get();
 		$roles = Role::where('role', '!=', 'admin')->get()->reverse();
 
-		return view('users.create', compact(['roles', 'colors']));
+		return view('users.create', compact('roles'));
 	}
 
 	/**
@@ -47,20 +45,18 @@ class UserController extends Controller {
 			'first_name' => $request->first_name,
 			'last_name'  => $request->last_name,
 			'phone'      => $request->phone,
-			'color_id'   => $request->color,
-			'email'      => $request->email ? $request->email : $request->first_name . rand(999, 99999) . '@undefined.' . str_random(3),
+			'email'      => $request->email ? $request->email : preg_replace('/\s+/', '', $request->first_name) . rand(999, 99999) . '@undefined.' . str_random(3),
 			'password'   => bcrypt($request->first_name),
 		]);
 
 		$user->roles()->attach($request->role);
 
 		$color = Color::find($request->color);
-		$color->used = true;
+		$user->color()->save($color);
 
 		$user->save();
-		$color->save();
 
-		alert('Member successfully added! <br> <a href="/users"><button class="btn">Return home</button></a> <a href="#" onclick="swal.closeModal(); return false;"><button class="btn">Add more</button></a>')->html()->autoclose(5000);
+		alert('<br>Employee successfully added! <br><br><br> <a href="/users"><button class="btn btm-default">Return home</button></a> <a href="#" onclick="swal.closeModal(); return false;"><button class="btn btn-primary">Add more</button></a><br><br>')->autoclose(5000);
 
 		return back();
 	}
@@ -84,9 +80,6 @@ class UserController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(CheckIdRequest $request) {
-//		$user = User::find($request->id);
-//
-//		return response()->json(['response' => $user], 200);
 	}
 
 	/**
@@ -106,7 +99,14 @@ class UserController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id) {
-		//
+	public function destroy(CheckIdRequest $request) {
+		Shift::where('user_id', '=', $request->id)->delete();
+		Color::where('user_id', '=', $request->id)->update(['user_id' => null]);
+
+		if(User::find($request->id)->delete()) {
+			return response()->json([], 204);
+		}
+
+		return response()->json(['error' => 'an error has occurred'], 404);
 	}
 }
