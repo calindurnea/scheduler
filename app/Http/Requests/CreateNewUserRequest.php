@@ -28,7 +28,7 @@ class CreateNewUserRequest extends FormRequest
 	        'last_name'  => 'sometimes|nullable|string|max:255',
 	        'email'      => 'sometimes|nullable|string|email|max:255|unique:users',
 	        'phone'      => 'sometimes|nullable|numeric|digits:8|unique:users',
-	        'color'      => 'required|integer|unique:users,color_id',
+	        'color'      => 'required|integer',
 	        'role'       => 'required|numeric|min:2'
         ];
     }
