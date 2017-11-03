@@ -17,8 +17,6 @@ use Faker\Generator as Faker;
 $factory->define(App\User::class, function(Faker $faker) {
 	static $password;
 
-	$colors = Color::inRandomOrder()->pluck('id')->first();
-
 	return [
 		'first_name'     => $faker->firstName,
 		'last_name'      => $faker->lastName,
@@ -26,6 +24,5 @@ $factory->define(App\User::class, function(Faker $faker) {
 		'email'          => $faker->unique()->safeEmail,
 		'password'       => $password ?: $password = bcrypt('secret'),
 		'remember_token' => str_random(10),
-		'color_id'       => $colors
 	];
 });

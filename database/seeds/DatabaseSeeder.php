@@ -1,5 +1,6 @@
 <?php
 
+use App\Color;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder {
@@ -18,11 +19,14 @@ class DatabaseSeeder extends Seeder {
 //		DB::table('shifts')->truncate();
 //		DB::table('role_user')->truncate();
 //
-//		factory(App\User::class, 5)->create();
+		factory(App\User::class, 5)->create();
 //		factory(App\Shift::class, 20)->create();
 //
-//		App\User::all()->each(function($user) {
-//			$user->roles()->attach(3);
-//		});
+		App\User::all()->each(function($user) {
+			$color = Color::inRandomOrder();
+
+			$user->roles()->attach(3);
+//			$user->color()->save($color);
+		});
 	}
 }
