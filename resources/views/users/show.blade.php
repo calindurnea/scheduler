@@ -25,7 +25,7 @@
     <div class="user_color_block" style="background: {{$user->hexColor()}}">
 
     </div>
-
+    @managerOrAdmin
     <div class="dropdown">
         <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -38,16 +38,16 @@
             </button>
             <button class="dropdown-item btn-edit" data-edit="phone" type="button">Phone
             </button>
-            @managerOrAdmin
             <button class="dropdown-item btn-edit" data-edit="color_id" type="button">Color
             </button>
             <button class="dropdown-item btn-edit" data-edit="position" type="button">Position
             </button>
-            <button class="dropdown-item btn-edit" data-edit="schedule" type="button">Schedule
-            </button>
-            @endmanagerOrAdmin
+            {{--<button class="dropdown-item btn-edit" data-edit="schedule" type="button">Schedule--}}
+            {{--</button>--}}
         </div>
     </div>
+    <button class="btn btn-danger" id="delete-user">Delete user</button>
+    @endmanagerOrAdmin
 
     @include('schedule.editModal')
     <ul>

@@ -33,8 +33,8 @@
     </div>
 
     <div>
-        <a href="user/create">
-            <button class="pull-right btn btn-primary">Add person</button>
+        <a href="users/create">
+            <button class="pull-right btn btn-primary">Add employee</button>
         </a>
     </div>
 
