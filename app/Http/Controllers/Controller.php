@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Color;
 use App\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -27,6 +28,9 @@ class Controller extends BaseController {
 		});
 
 		$users = User::withRoles(['member', 'temp', 'manager'])->get();
+		$availableColors = Color::where('user_id', NULL)->get();
+
 		View::share('users', $users);
+		View::share('availableColors', $availableColors);
 	}
 }
