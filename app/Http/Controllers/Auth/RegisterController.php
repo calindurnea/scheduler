@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-	    $user->roles()->attach([2]);
+	    $user->roles()->attach([3]);
 
 	    return $user;
 
