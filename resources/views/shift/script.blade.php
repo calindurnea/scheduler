@@ -8,6 +8,7 @@
 
     $(document).ready(function () {
 
+        shifts = {!! json_encode($shifts) !!};
         users = {!!json_encode($users)!!};
 
         var inputOptions = {};
@@ -20,7 +21,7 @@
         }
 
         $.ajax({
-            url: "{{route('schedule_get')}}",
+            url: "{{route('schedules.index')}}",
             method: 'get',
             success: function (response) {
                 response[0].map(function (item) {
@@ -54,14 +55,7 @@
             allDaySlot: false,
             slotLabelFormat: 'HH:mm',
 
-            events:
-                {
-                    url: "{{route('shifts_show')}}",
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                },
+            events: shifts,
             eventStartEditable: false,
 
             select: function (start, end) {
@@ -91,7 +85,7 @@
                 });
 
                 swal({
-                    title: 'Select employee',
+                    title: 'New shift',
                     html: 'Check interval </br> <input class="col-md-10" type="text" id="datepicker" value="' + startTime + ' to ' + endTime + '">',
                     input: 'select',
                     inputOptions: inputOptions,
@@ -104,7 +98,7 @@
                                 reject('Please select an employee')
                             } else {
                                 $.ajax({
-                                    url: "{{route('shifts_store')}}",
+                                    url: "{{route('shifts.store')}}",
                                     method: "POST",
                                     data: {
                                         email: value,
@@ -143,6 +137,97 @@
             },
             eventClick: function (calEvent) {
                 console.log(calEvent);
+                startTime = moment(calEvent.start).format('Do of MMM - HH:mm');
+                endTime = moment(calEvent.end).format('Do of MMM - HH:mm');
+                swal({
+                    title: calEvent.title,
+                    text: startTime + ' to ' + endTime,
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    cancelButtonText: 'Delete',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Edit',
+                }).then(function () {
+                    swal({
+                        title: 'Edit shift',
+                        html: 'Check interval </br> <input class="col-md-10" type="text" id="datepicker" value="' + startTime + ' to ' + endTime + '">',
+                        input: 'select',
+                        inputOptions: inputOptions,
+                        inputPlaceholder: 'Select employee',
+                        showCancelButton: true,
+                        allowOutsideClick: false,
+                        inputValidator: function (value) {
+                            return new Promise(function (resolve, reject) {
+                                if (!value) {
+                                    reject('Please select an employee')
+                                } else {
+                                    {{--$.ajax({--}}
+                                    {{--url: "{{route('shifts.update')}}",--}}
+                                    {{--method: "POST",--}}
+                                    {{--data: {--}}
+                                    {{--id: calEvent.id,--}}
+                                    {{--email: value,--}}
+                                    {{--start: moment(start).format(),--}}
+                                    {{--end: moment(end).format()--}}
+                                    {{--},--}}
+                                    {{--success: function () {--}}
+                                    {{--calendarContainer.fullCalendar('renderEvent', {--}}
+                                    {{--"title": value,--}}
+                                    {{--"start": moment(start).format(),--}}
+                                    {{--"end": moment(end).format()--}}
+                                    {{--});--}}
+                                    {{--resolve()--}}
+                                    {{--},--}}
+                                    {{--error: function (error) {--}}
+                                    {{--if (error.status === 422) {--}}
+                                    {{--error = error.responseJSON;--}}
+                                    {{--$.each(error, function (key, value) {--}}
+                                    {{--reject(value[0])--}}
+                                    {{--})--}}
+                                    {{--}--}}
+                                    {{--}--}}
+                                    {{--});--}}
+                                }
+                            })
+                        }
+                    }).then(function () {
+                        swal({
+                            type: 'success',
+                            html: 'Shift changed!'
+                        });
+                        calendarContainer.fullCalendar('refetchEvents')
+                    }, function (dismiss) {
+                        calendarContainer.fullCalendar('unselect')
+                    }).catch(swal.noop);
+                }, function (dismiss) {
+                    if (dismiss === 'cancel') {
+                        swal({
+                                title: 'Delete shift',
+                                html: 'Are you sure? <br><br>' + calEvent.title + '<br>' + startTime + ' to ' + endTime,
+                                type: 'warning',
+                                confirmButtonText: 'Yes'
+                            }
+                        ).then(function () {
+                            {{--$.ajax({--}}
+                            {{--url: "{!! route('shifts.destroy')!!}" + "/" + calEvent.id,--}}
+                            {{--method: 'delete',--}}
+                            {{--success: function () {--}}
+                            {{--swal({--}}
+                            {{--title: 'Shift deleted!',--}}
+                            {{--type: 'success'--}}
+                            {{--}).catch(swal.noop)--}}
+                            {{--},--}}
+                            {{--error: function () {--}}
+                            {{--swal({--}}
+                            {{--title: 'An error has occurred!',--}}
+                            {{--text: 'Please try again!',--}}
+                            {{--type: 'error'--}}
+                            {{--}).catch(swal.noop)--}}
+                            {{--}--}}
+                            {{--})--}}
+                        }).catch(swal.noop)
+                    }
+                }).catch(swal.noop);
             }
 
         });

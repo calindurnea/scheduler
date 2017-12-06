@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Color;
-use App\Http\Requests\CheckIdRequest;
-use App\Http\Requests\CreateNewUserRequest;
 use App\Role;
 use App\Shift;
 use App\User;
+use Illuminate\Http\Request;
 use function compact;
 use function preg_replace;
 use function view;
@@ -40,7 +39,16 @@ class UserController extends Controller {
 	 * @param  \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(CreateNewUserRequest $request) {
+	public function store(Request $request) {
+		request()->validate([
+			'first_name' => 'required|string|max:255',
+			'last_name'  => 'sometimes|nullable|string|max:255',
+			'email'      => 'sometimes|nullable|string|email|max:255|unique:users',
+			'phone'      => 'sometimes|nullable|numeric|digits:8|unique:users',
+			'color'      => 'required|integer',
+			'role'       => 'required|numeric|min:2'
+		]);
+
 		$user = User::create([
 			'first_name' => $request->first_name,
 			'last_name'  => $request->last_name,
@@ -56,9 +64,8 @@ class UserController extends Controller {
 
 		$user->save();
 
-		alert('<br>Employee successfully added! <br><br><br> <a href="/users"><button class="btn btm-default">Return home</button></a> <a href="#" onclick="swal.closeModal(); return false;"><button class="btn btn-primary">Add more</button></a><br><br>')->autoclose(5000);
-
-		return back();
+		return redirect()->route('users.create')
+			->with('success', 'Employee added successfully!');
 	}
 
 	/**
@@ -67,9 +74,7 @@ class UserController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(CheckIdRequest $request) {
-		$user = User::findOrFail($request->id);
-
+	public function show(User $user) {
 		return view('users.show', compact('user'));
 	}
 
@@ -79,7 +84,8 @@ class UserController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(CheckIdRequest $request) {
+	public function edit(User $user) {
+		return view('users.edit', compact('user'));
 	}
 
 	/**
@@ -99,14 +105,12 @@ class UserController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(CheckIdRequest $request) {
-		Shift::where('user_id', '=', $request->id)->delete();
-		Color::where('user_id', '=', $request->id)->update(['user_id' => null]);
+	public function destroy($id) {
+		Shift::where('user_id', '=', $id)->delete();
+		Color::where('user_id', '=', $id)->update(['user_id' => null]);
+		User::find($id)->delete();
 
-		if(User::find($request->id)->delete()) {
-			return response()->json([], 204);
-		}
-
-		return response()->json(['error' => 'an error has occurred'], 404);
+		return redirect()->route('users.index')
+			->with('success', 'Employee deleted successfully');
 	}
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NewShiftRequest;
 use App\Rules\IsSameDayRule;
 use App\Shift;
 use App\User;
 use Illuminate\Http\Request;
+use function compact;
 
 class ShiftController extends Controller {
 
@@ -16,7 +16,9 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		return view('shift.index');
+		$shifts = Shift::all();
+
+		return view('shift.index', compact('shifts'));
 	}
 
 	/**
@@ -34,25 +36,22 @@ class ShiftController extends Controller {
 	 * @param  \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(NewShiftRequest $request) {
+	public function store(Request $request) {
 		$user = User::where('email', '=', $request->email)->first();
 
 		$this->validate($request, [
-			'start' => new IsSameDayRule($user),
-			'end'   => new IsSameDayRule($user),
+			'email' => 'required|email|max:255|exists:users,email',
+			'start' => ['required', 'date', new IsSameDayRule($user)],
+			'end'   => ['required', 'date', new IsSameDayRule($user)],
 		]);
 
-		try {
-			$shift = new Shift;
-			$shift->start = $request->start;
-			$shift->duration = $request->end;
-			$user->shifts()->save($shift);
-		} catch(\Exception $e) {
-			//$e->getMessage()   -> for error message
-			return response()->json([], 500);
-		}
+		$shift = new Shift;
+		$shift->start = $request->start;
+		$shift->duration = $request->end;
+		$user->shifts()->save($shift);
 
-		return response()->json([], 200);
+		return redirect()->route('shifts.index')
+			->with('success', 'Shift added successfully!');
 	}
 
 	/**
@@ -61,10 +60,8 @@ class ShiftController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show() {
-		$shifts = Shift::all();
-
-		return response()->json($shifts, 200);
+	public function show($id) {
+		//
 	}
 
 	/**
@@ -95,6 +92,9 @@ class ShiftController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy($id) {
-		//
+		Shift::where('id', '=', $id)->delete();
+
+		return redirect()->route('shifts.index')
+			->with('success', 'Shift deleted successfully');
 	}
 }

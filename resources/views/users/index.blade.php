@@ -17,8 +17,8 @@
             @foreach($users as $user)
                 <tr onclick="event.preventDefault(); document.getElementById('user-profile-form-{{$user->id}}').submit();">
                     <td class="" scope="row">{{$user->first_name}} {{$user->last_name}}
-                        <form action="{{route('users_show', ['id'=>$user->id])}}" id="user-profile-form-{{$user->id}}"
-                              method="post" style="display: none;">
+                        <form action="{{route('users.show', ['id'=>$user->id])}}" id="user-profile-form-{{$user->id}}"
+                              method="get" style="display: none;">
                             {{ csrf_field() }}
                         </form>
                     </td>
@@ -33,7 +33,7 @@
     </div>
 
     <div>
-        <a href="users/create">
+        <a href="{{route('users.create')}}">
             <button class="pull-right btn btn-primary">Add employee</button>
         </a>
     </div>

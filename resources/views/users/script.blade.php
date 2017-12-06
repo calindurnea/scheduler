@@ -89,16 +89,13 @@
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
-//            focusCancel: true,
+            focusCancel: true,
         }).then(function () {
             $.ajax({
-                url: '{{route('users_delete')}}',
-                data: {
-                    id: '{{$user->id}}'
-                },
-                method: 'post',
+                url: '{{route('users.destroy', $user->id)}}',
+                method: 'delete',
                 success: function () {
-//                    window.location.href = "users";
+                    window.location.href = "../users";
                 }
             });
 

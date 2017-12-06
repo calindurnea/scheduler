@@ -46,7 +46,7 @@
             {{--</button>--}}
         </div>
     </div>
-    <button class="btn btn-danger" id="delete-user">Delete user</button>
+    <button class="btn btn-danger" id="delete-user">Delete employee</button>
     @endmanagerOrAdmin
 
     @include('schedule.editModal')

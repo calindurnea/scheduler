@@ -4,7 +4,7 @@
     <div class="container">
         <h1 class="mt-4 center_title">Add a new employee</h1>
         <div class="create_user_form_container">
-            <form class="form-horizontal" method="POST" action="{{ route('users_store') }}">
+            <form class="form-horizontal" method="POST" action="{{ route('users.store') }}">
                 {{ csrf_field() }}
 
                 <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Color;
-use App\Http\Requests\CheckIdRequest;
-use function compact;
 use Illuminate\Http\Request;
+use function compact;
 
 class ColorController extends Controller {
 
@@ -76,13 +75,11 @@ class ColorController extends Controller {
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(CheckIdRequest $request) {
-		Color::where('id', '=', $request->id)->update(['user_id'=>null]);
+	public function destroy($id) {
+		Color::where('id', '=', $id)->update(['user_id' => null]);
+		Color::find($id)->delete();
 
-		if(Color::find($request->id)->delete()) {
-			return response()->json([], 204);
-		}
-
-		return response()->json(['error' => 'an error has occurred'], 404);
+		return redirect()->route('colors.index')
+			->with('success', 'Color deleted successfully');
 	}
 }

@@ -3,7 +3,7 @@
 @section('content')
 
     <h1 class="mt-4 center_title">Register</h1>
-    <form class="col-md-5 col-xs-12 col-sm-12 mt-4 mx-auto" method="POST" action="{{ route('register') }}">
+    <form class="col-md-3 col-xs-12 col-sm-12 mt-4 mx-auto" method="POST" action="{{ route('register') }}">
         {{ csrf_field() }}
 
         <div class="form-group{{ $errors->has('first_name') ? ' text-danger' : '' }}">
