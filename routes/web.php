@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\MessagePosted;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,13 +13,17 @@
 |
 */
 
-Route::get('/', function() {
-	return view('welcome');
+Route::get('/', function () {
+    return view('welcome');
 });
 
 Auth::routes();
 
-Route::resource('users','UserController');
-Route::resource('shifts','ShiftController');
-Route::resource('colors','ColorController');
-Route::resource('schedules','ScheduleController');
+Route::resource('users', 'UserController');
+Route::resource('shifts', 'ShiftController');
+Route::resource('colors', 'ColorController');
+Route::resource('schedules', 'ScheduleController');
+
+Route::get('/chat', 'ChatController@index');
+Route::get('messages', 'ChatController@fetchMessages');
+Route::post('messages', 'ChatController@sendMessage');

@@ -12,6 +12,7 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
         "nesbot/carbon": "^1.22",
+        "pusher/pusher-php-server": "^3.0",
         "uxweb/sweet-alert": "^1.4"
     },
     "require-dev": {

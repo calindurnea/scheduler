@@ -30,14 +30,16 @@
             </li>
             @else
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                    <a id="logged-user" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ Auth::user()->first_name }} <span
                                 class="caret"></span></a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="{{route('users.show', Auth::user()->id)}}">
                             Settings</a>
+                        <a class="dropdown-item" href="/chat">Chatroom</a>
                         @managerOrAdmin
                         <a class="dropdown-item" href="{{route('colors.index')}}">Edit colors</a>
+                        <a class="dropdown-item" href="{{route('schedules.show', 1)}}">Edit schedule</a>
                         @endmanagerOrAdmin
 
                         <a class="dropdown-item" href="{{ route('logout') }}"
