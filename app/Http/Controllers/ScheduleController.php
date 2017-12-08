@@ -5,82 +5,94 @@ namespace App\Http\Controllers;
 use App\Schedule;
 use Illuminate\Http\Request;
 
-class ScheduleController extends Controller {
+class ScheduleController extends Controller
+{
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index() {
-		$daysSchedule = Schedule::all()->makeHidden(['day', 'id']);
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $daysSchedule = Schedule::all()->makeHidden(['day', 'id']);
 
-		$minHour = $daysSchedule->sortBy('start')->pluck('start')->first();
+        $minHour = $daysSchedule->sortBy('start')->pluck('start')->first();
 
-		$maxHour = $daysSchedule->sortByDesc('end')->pluck('end')->first();
+        $maxHour = $daysSchedule->sortByDesc('end')->pluck('end')->first();
 
-		return response()->json([$daysSchedule, $minHour, $maxHour], 200);
-	}
+        return response()->json([$daysSchedule, $minHour, $maxHour], 200);
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create() {
-		//
-	}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('schedule.create');
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request) {
-		//
-	}
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        return response()->json($request);
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id) {
-		//
-	}
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        if (Schedule::find($id)) {
+            return view('schedule.show', ['schedule' => Schedule::find($id)]);
+        }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit() {
-		$schedule = Schedule::all();
+        return view('schedule.create');
+    }
 
-		return response()->json(['data' => $schedule], 200);
-	}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit()
+    {
+        $schedule = Schedule::all();
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @param  int $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id) {
-		//
-	}
+        return response()->json(['data' => $schedule], 200);
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id) {
-		//
-	}
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 }

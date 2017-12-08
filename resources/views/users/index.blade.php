@@ -32,10 +32,11 @@
         </table>
     </div>
 
+    @managerOrAdmin
     <div>
         <a href="{{route('users.create')}}">
             <button class="pull-right btn btn-primary">Add employee</button>
         </a>
     </div>
-
+    @endmanagerOrAdmin
 @endsection

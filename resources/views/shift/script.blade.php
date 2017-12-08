@@ -1,8 +1,7 @@
-{{--moment--}}
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 {{--fullcalendar--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.5.1/fullcalendar.min.js"
         integrity="sha256-MDHWvW/uBfL2FEZwh9gqePZTrrxfCgNlQelyThMV8/c=" crossorigin="anonymous"></script>
+
 <script>
     calendarContainer = $('#calendar');
 
