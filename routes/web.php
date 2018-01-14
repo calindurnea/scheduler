@@ -19,11 +19,35 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::post('shifts/sendmail', ['as' => 'shifts.sendmail', 'uses' => 'ShiftController@sendMail']);
+
+//chat
+Route::get('chat', 'ChatsController@index');
+Route::get('chat/messages', 'ChatsController@fetchMessages');
+Route::post('chat/messages', 'ChatsController@sendMessage');
+
+//users
+Route::get('users/shifts', ['as' => 'users.getShifts', 'uses' => 'UserController@getShifts']);
+
 Route::resource('users', 'UserController');
+
+Route::resource('users', 'UserController', [
+    'except' => ['index', 'show', 'getShifts']
+])->middleware('manager');
+
+//shifts
 Route::resource('shifts', 'ShiftController');
-Route::resource('colors', 'ColorController');
+
+Route::resource('shifts', 'ShiftController', [
+    'except' => ['index', 'show']
+])->middleware('manager');
+
+//colors
+Route::resource('colors', 'ColorController')->middleware('manager');
+
+//schedule
 Route::resource('schedules', 'ScheduleController');
 
-Route::get('/chat', 'ChatController@index');
-Route::get('messages', 'ChatController@fetchMessages');
-Route::post('messages', 'ChatController@sendMessage');
+Route::resource('schedules', 'ScheduleController', [
+    'except' => ['index', 'show']
+])->middleware('manager');
