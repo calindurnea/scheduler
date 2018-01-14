@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
 
-class ChatController extends Controller
+class ChatsController extends Controller
 {
     public function __construct()
     {
@@ -38,7 +38,7 @@ class ChatController extends Controller
      * Persist message to database
      *
      * @param  Request $request
-     * @return Response
+     * @return Respons
      */
     public function sendMessage(Request $request)
     {
