@@ -3,7 +3,15 @@
         integrity="sha256-MDHWvW/uBfL2FEZwh9gqePZTrrxfCgNlQelyThMV8/c=" crossorigin="anonymous"></script>
 
 <script>
-    calendarContainer = $('#calendar');
+
+    @if(Session::has('flash_message'))
+    swal({
+        title: '{{ Session::get('flash_message') }}',
+        type: '{{Session::get('flash_type')}}'
+    })
+    @endif
+
+        calendarContainer = $("#calendar");
 
     $(document).ready(function () {
 
@@ -20,19 +28,19 @@
         }
 
         $.ajax({
-            url: "{{route('schedules.index')}}",
-            method: 'get',
+            url: "{{route("schedules.index")}}",
+            method: "GET",
             success: function (response) {
                 response[0].map(function (item) {
                     return item.dow = [item.dow];
                 });
 
-                calendarContainer.fullCalendar('option', {
+                calendarContainer.fullCalendar("option", {
                     businessHours: response[0],
                     minTime: response[1], //min value from schedule
                     maxTime: response[2], //max value from schedule
-                    selectConstraint: 'businessHours',
-                    scrollTime: '09:00:00'
+                    selectConstraint: "businessHours",
+                    scrollTime: "08:00:00"
                 });
 
             }
@@ -40,33 +48,31 @@
 
         calendarContainer.fullCalendar({
             header: {
-                left: 'prev, title, next',
-                center: 'today',
-                right: 'agendaWeek, month'
+                left: "prev, title, next",
+                center: "today",
+                right: "agendaWeek, month"
             },
             selectable: true,
             selectHelper: true,
             unselectAuto: false,
             editable: false,
-            defaultView: 'agendaWeek', //month
-            weekNumberCalculation: 'ISO',
-            height: $(document).height() - 100,
+            defaultView: "agendaWeek", // or  -  month
+            weekNumberCalculation: "ISO",
+            height: "auto",
             allDaySlot: false,
-            slotLabelFormat: 'HH:mm',
-
+            slotLabelFormat: "HH:mm",
             events: shifts,
             eventStartEditable: false,
-
             select: function (start, end) {
-                startTime = moment(start).format('Do of MMM - HH:mm');
-                endTime = moment(end).format('Do of MMM - HH:mm');
+                startTime = moment(start).format("Do of MMM - HH:mm");
+                endTime = moment(end).format("Do of MMM - HH:mm");
 
-                $(document).on('focus', '#datepicker', function () {
+                $(document).on("focus", "#datepicker", function () {
                     $(this).daterangepicker({
                         startDate: start,
                         endDate: end,
                         locale: {
-                            format: 'Do of MMM - HH:mm'
+                            format: "Do of MMM - HH:mm"
                         },
                         dateLimit: {
                             days: 1
@@ -74,30 +80,30 @@
                         timePicker: true,
                         timePickerIncrement: 30,
                         timePicker24Hour: true,
-                        opens: 'center',
+                        opens: "center",
                     });
 
-                    $('#datepicker').on('apply.daterangepicker', function (ev, picker) {
+                    $("#datepicker").on("apply.daterangepicker", function (ev, picker) {
                         start = picker.startDate;
                         end = picker.endDate;
                     });
                 });
 
                 swal({
-                    title: 'New shift',
-                    html: 'Check interval </br> <input class="col-md-10" type="text" id="datepicker" value="' + startTime + ' to ' + endTime + '">',
-                    input: 'select',
+                    title: "New shift",
+                    html: "Check interval </br> <input class='col-md-10' type='text' id='datepicker' value='" + startTime + " to " + endTime + "'>",
+                    input: "select",
                     inputOptions: inputOptions,
-                    inputPlaceholder: 'Select employee',
+                    inputPlaceholder: "Select employee",
                     showCancelButton: true,
                     allowOutsideClick: false,
                     inputValidator: function (value) {
                         return new Promise(function (resolve, reject) {
                             if (!value) {
-                                reject('Please select an employee')
+                                reject("Please select an employee")
                             } else {
                                 $.ajax({
-                                    url: "{{route('shifts.store')}}",
+                                    url: "{{route("shifts.store")}}",
                                     method: "POST",
                                     data: {
                                         email: value,
@@ -105,20 +111,10 @@
                                         end: moment(end).format()
                                     },
                                     success: function () {
-                                        calendarContainer.fullCalendar('renderEvent', {
-                                            "title": value,
-                                            "start": moment(start).format(),
-                                            "end": moment(end).format()
-                                        });
-                                        resolve()
+                                        window.location.reload();
                                     },
                                     error: function (error) {
-                                        if (error.status === 422) {
-                                            error = error.responseJSON;
-                                            $.each(error, function (key, value) {
-                                                reject(value[0])
-                                            })
-                                        }
+                                        window.location.reload();
                                     }
                                 });
                             }
@@ -126,104 +122,102 @@
                     }
                 }).then(function () {
                     swal({
-                        type: 'success',
-                        html: 'Shift added!'
+                        type: "success",
+                        html: "Shift added!"
                     });
-                    calendarContainer.fullCalendar('refetchEvents')
+                    calendarContainer.fullCalendar("refetchEvents")
                 }, function (dismiss) {
-                    calendarContainer.fullCalendar('unselect')
+                    calendarContainer.fullCalendar("unselect")
                 }).catch(swal.noop);
             },
             eventClick: function (calEvent) {
-                console.log(calEvent);
-                startTime = moment(calEvent.start).format('Do of MMM - HH:mm');
-                endTime = moment(calEvent.end).format('Do of MMM - HH:mm');
+                start = calEvent.start;
+                end = calEvent.end;
+
+                startTime = moment(calEvent.start).format("Do of MMM - HH:mm");
+                endTime = moment(calEvent.end).format("Do of MMM - HH:mm");
                 swal({
                     title: calEvent.title,
-                    text: startTime + ' to ' + endTime,
+                    text: startTime + " to " + endTime,
                     showCloseButton: true,
                     showCancelButton: true,
-                    cancelButtonText: 'Delete',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Edit',
+                    cancelButtonText: "Delete",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Edit",
                 }).then(function () {
+                    $(document).on("focus", "#datepicker", function () {
+                        $(this).daterangepicker({
+                            startDate: start,
+                            endDate: end,
+                            locale: {
+                                format: "Do of MMM - HH:mm"
+                            },
+                            dateLimit: {
+                                days: 1
+                            },
+                            timePicker: true,
+                            timePickerIncrement: 30,
+                            timePicker24Hour: true,
+                            opens: "center",
+                        });
+
+                        $("#datepicker").on("apply.daterangepicker", function (ev, picker) {
+                            start = picker.startDate;
+                            end = picker.endDate;
+                        });
+                    });
                     swal({
-                        title: 'Edit shift',
-                        html: 'Check interval </br> <input class="col-md-10" type="text" id="datepicker" value="' + startTime + ' to ' + endTime + '">',
-                        input: 'select',
+                        title: "Edit shift",
+                        html: "Check interval </br> <input class='col-md-10' type='text' id='datepicker' value='" + startTime + " to " + endTime + "'>",
+                        input: "select",
                         inputOptions: inputOptions,
-                        inputPlaceholder: 'Select employee',
+                        inputPlaceholder: "Select employee",
+                        inputValue: calEvent.email,
                         showCancelButton: true,
                         allowOutsideClick: false,
                         inputValidator: function (value) {
                             return new Promise(function (resolve, reject) {
                                 if (!value) {
-                                    reject('Please select an employee')
+                                    reject("Please select an employee")
                                 } else {
-                                    {{--$.ajax({--}}
-                                    {{--url: "{{route('shifts.update')}}",--}}
-                                    {{--method: "POST",--}}
-                                    {{--data: {--}}
-                                    {{--id: calEvent.id,--}}
-                                    {{--email: value,--}}
-                                    {{--start: moment(start).format(),--}}
-                                    {{--end: moment(end).format()--}}
-                                    {{--},--}}
-                                    {{--success: function () {--}}
-                                    {{--calendarContainer.fullCalendar('renderEvent', {--}}
-                                    {{--"title": value,--}}
-                                    {{--"start": moment(start).format(),--}}
-                                    {{--"end": moment(end).format()--}}
-                                    {{--});--}}
-                                    {{--resolve()--}}
-                                    {{--},--}}
-                                    {{--error: function (error) {--}}
-                                    {{--if (error.status === 422) {--}}
-                                    {{--error = error.responseJSON;--}}
-                                    {{--$.each(error, function (key, value) {--}}
-                                    {{--reject(value[0])--}}
-                                    {{--})--}}
-                                    {{--}--}}
-                                    {{--}--}}
-                                    {{--});--}}
+                                    $.ajax({
+                                        url: "shifts/" + calEvent.id,
+                                        method: "PUT",
+                                        data: {
+                                            email: value,
+                                            start: moment(start).format(),
+                                            end: moment(end).format()
+                                        },
+                                        success: function (shift) {
+                                            window.location.reload();
+                                        },
+                                        error: function (error) {
+                                            window.location.reload();
+                                        }
+                                    });
                                 }
                             })
                         }
-                    }).then(function () {
-                        swal({
-                            type: 'success',
-                            html: 'Shift changed!'
-                        });
-                        calendarContainer.fullCalendar('refetchEvents')
-                    }, function (dismiss) {
-                        calendarContainer.fullCalendar('unselect')
                     }).catch(swal.noop);
                 }, function (dismiss) {
-                    if (dismiss === 'cancel') {
+                    if (dismiss === "cancel") {
                         swal({
-                                title: 'Delete shift',
-                                html: 'Are you sure? <br><br>' + calEvent.title + '<br>' + startTime + ' to ' + endTime,
-                                type: 'warning',
-                                confirmButtonText: 'Yes'
+                                title: "Delete shift",
+                                html: "Are you sure? <br><br>" + calEvent.title + "<br>" + startTime + " to " + endTime,
+                                type: "warning",
+                                confirmButtonText: "Yes"
                             }
                         ).then(function () {
-                            {{--$.ajax({--}}
-                            {{--url: "{!! route('shifts.destroy')!!}" + "/" + calEvent.id,--}}
-                            {{--method: 'delete',--}}
-                            {{--success: function () {--}}
-                            {{--swal({--}}
-                            {{--title: 'Shift deleted!',--}}
-                            {{--type: 'success'--}}
-                            {{--}).catch(swal.noop)--}}
-                            {{--},--}}
-                            {{--error: function () {--}}
-                            {{--swal({--}}
-                            {{--title: 'An error has occurred!',--}}
-                            {{--text: 'Please try again!',--}}
-                            {{--type: 'error'--}}
-                            {{--}).catch(swal.noop)--}}
-                            {{--}--}}
-                            {{--})--}}
+                            $.ajax({
+                                url: "shifts/" + calEvent.id,
+                                method: "delete",
+                                success: function () {
+                                    window.location.reload();
+                                },
+                                error: function () {
+                                    window.location.reload();
+                                }
+                            })
                         }).catch(swal.noop)
                     }
                 }).catch(swal.noop);
