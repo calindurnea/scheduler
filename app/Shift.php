@@ -20,8 +20,7 @@ class Shift extends Model {
 	];
 
 	protected $hidden = [
-		'user_id', 'created_at', 'updated_at', 'deleted_at', 'duration',
-		'startDate', 'endDate'
+		'user_id', 'created_at', 'updated_at', 'deleted_at',
 	];
 
 	public function user() {
@@ -59,4 +58,8 @@ class Shift extends Model {
 	public function setDurationAttribute($value) {
 		return $this->attributes['duration'] = Carbon::parse($this->attributes['start'])->diffInHours(Carbon::parse($value));
 	}
+
+    public function scopeBetween($query, $start, $end){
+        return $query->whereBetween('start', [$start, $end]);
+    }
 }
