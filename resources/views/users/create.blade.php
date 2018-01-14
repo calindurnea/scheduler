@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(\Session::has('success'))
+        <div class="alert alert-success col-md-2 pull-right">
+            {{\Session::get('success')}}
+        </div>
+    @endif
     <div class="container">
         <h1 class="mt-4 center_title">Add a new employee</h1>
         <div class="create_user_form_container">
