@@ -35,8 +35,9 @@
                                 class="caret"></span></a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="{{route('users.show', Auth::user()->id)}}">
-                            Settings</a>
+                            Profile</a>
                         <a class="dropdown-item" href="/chat">Chatroom</a>
+
                         @managerOrAdmin
                         <a class="dropdown-item" href="{{route('colors.index')}}">Edit colors</a>
                         <a class="dropdown-item" href="{{route('schedules.show', 1)}}">Edit schedule</a>
