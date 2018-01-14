@@ -8,11 +8,16 @@
         "php": ">=7.0.0",
         "doctrine/dbal": "^2.6",
         "fideloper/proxy": "~3.3",
+        "guzzlehttp/guzzle": "^6.3",
+        "laravel-validation-rules/colour": "^1.0",
         "laravel/framework": "5.5.*",
+        "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
         "nesbot/carbon": "^1.22",
+        "nexmo/laravel": "^1.0",
         "pusher/pusher-php-server": "^3.0",
+        "spatie/laravel-google-calendar": "^2.1",
         "uxweb/sweet-alert": "^1.4"
     },
     "require-dev": {
