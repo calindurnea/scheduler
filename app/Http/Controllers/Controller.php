@@ -17,10 +17,11 @@ class Controller extends BaseController {
 	/**
 	 * @var type
 	 */
-	protected $user, $space;
+	protected $user;
 
 	public function __construct() {
 		$this->middleware('auth');
+
 		$this->middleware(function($request, $next) {
 			$this->user = request()->user();
 
