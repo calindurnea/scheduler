@@ -8,11 +8,11 @@
             @endforeach
         </ul>
         <div class="container-add-colors">
-            <button class="btn btn-primary pull-right btn-add-color">Add color</button>
+            <button class="btn btn-primary pull-right" id="btn-add-color">Add color</button>
         </div>
     </div>
 
 @stop
 @section('pageScripts')
-        @include('colors.script')
+    @include('colors.script')
 @stop
