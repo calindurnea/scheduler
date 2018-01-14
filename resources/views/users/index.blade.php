@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(\Session::has('error'))
+        <div class="alert alert-danger col-md-2 pull-right">
+            {{\Session::get('error')}}
+        </div>
+    @endif
     <h1 class="mt-4 center_title">Employees</h1>
     <div class="col-md-8 col-xs-12 col-sm-12 mt-4 mx-auto">
         <table class="table table-bordered table-hover table-responsive employees-table">
