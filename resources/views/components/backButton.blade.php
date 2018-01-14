@@ -1,3 +1,7 @@
-<form action="{{url()->previous()}}" method="get">
-    <input type="submit" class="btn btn-info" value="Back">
-</form>
+<br>
+<div>
+    <a href="{{$route}}">
+        <button class="btn btn-info">Back</button>
+    </a>
+</div>
+<br>
