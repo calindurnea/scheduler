@@ -1,87 +1,5 @@
 <script>
 
-    {{--$('.btn-edit').click(function () {--}}
-    {{--editValue = $(this).text().trim().toLowerCase();--}}
-
-    {{--switch (editValue) {--}}
-    {{--case "name":--}}
-    {{--swalObj = {--}}
-    {{--input: "string",--}}
-    {{--inputPlaceholder: '{{$user->first_name}} {{$user->last_name}}'--}}
-    {{--};--}}
-    {{--break;--}}
-    {{--case "email":--}}
-    {{--swalObj = {--}}
-    {{--input: "email",--}}
-    {{--inputPlaceholder: '{{$user->email}}'--}}
-    {{--};--}}
-    {{--break;--}}
-    {{--case "phone":--}}
-    {{--swalObj = {--}}
-    {{--input: "number",--}}
-    {{--inputPlaceholder: '{{$user->phone}}'--}}
-    {{--};--}}
-    {{--break;--}}
-    {{--case "color":--}}
-    {{--inputOptions = {};--}}
-    {{--$.ajax({--}}
-    {{--url: '{{route('colors_get')}}',--}}
-    {{--method: 'get',--}}
-    {{--success: function (colors) {--}}
-    {{--for (var i = 0; i < colors.length; i++) {--}}
-    {{--inputOptions[colors[i].id] = colors[i].hexCode;--}}
-    {{--}--}}
-    {{--}--}}
-    {{--}--}}
-    {{--);--}}
-
-    {{--swalObj = {--}}
-    {{--inputType: "select",--}}
-    {{--inputOptions: inputOptions,--}}
-    {{--inputPlaceholder: '{{$user->hexColor()}}'--}}
-    {{--};--}}
-    {{--break;--}}
-    {{--case "position":--}}
-    {{--inputType = "select";--}}
-    {{--break;--}}
-    {{--default:--}}
-    {{--swal(--}}
-    {{--'Oops...',--}}
-    {{--'Something went wrong! Try again.',--}}
-    {{--'error'--}}
-    {{--);--}}
-    {{--return;--}}
-    {{--}--}}
-
-
-    {{--swal({--}}
-    {{--options: swalObj,--}}
-    {{--showCancelButton: true,--}}
-    {{--confirmButtonText: 'Submit',--}}
-    {{--showLoaderOnConfirm: true,--}}
-    {{--preConfirm:--}}
-    {{--function (email) {--}}
-    {{--return new Promise(function (resolve, reject) {--}}
-    {{--setTimeout(function () {--}}
-    {{--if (email === 'taken@example.com') {--}}
-    {{--reject('This email is already taken.')--}}
-    {{--} else {--}}
-    {{--resolve()--}}
-    {{--}--}}
-    {{--}, 2000)--}}
-    {{--})--}}
-    {{--},--}}
-    {{--allowOutsideClick: true--}}
-    {{--}).then(function (email) {--}}
-    {{--swal({--}}
-    {{--swalObj,--}}
-    {{--type: 'success',--}}
-    {{--title: 'Ajax request finished!',--}}
-    {{--html: 'Submitted email: ' + email--}}
-    {{--})--}}
-    {{--}).catch(swal.noop)--}}
-    {{--});--}}
-
     $('#delete-user').click(function () {
         swal({
             title: 'Are you sure?',
@@ -101,4 +19,124 @@
 
         }).catch(swal.noop)
     })
+
+    dateRangeInput = $('input[name="shiftrange"]');
+    selectedShifts = [];
+    shiftsTable = $('#shifts-table');
+
+    dateRangeInput.daterangepicker({
+        startDate: moment().subtract(1, 'month'),
+        endDate: moment(),
+        showDropdowns: true,
+        showWeekNumbers: true,
+        autoApply: true,
+        autoUpdateInput: true,
+        locale: {
+            firstDay: 1,
+            format: 'YYYY-MM-DD'
+        },
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    });
+
+    dateRangeInput.on('apply.daterangepicker', function (ev, picker) {
+        getShifts(picker.startDate, picker.endDate)
+    });
+
+
+    function runningFormatter(value, row, index) {
+        return index;
+    }
+
+    function getShifts(startDate, endDate) {
+        var inputStartDate = startDate.format();
+        var inputEndDate = endDate.format();
+
+        // console.log(inputStartDate, inputEndDate);
+        $.ajax({
+            url: '{{route('users.getShifts')}}',
+            dataType: 'JSON',
+            method: 'get',
+            data: {
+                id: '{{$user->id}}',
+                start: inputStartDate,
+                end: inputEndDate
+            },
+            success: function (shifts) {
+                // console.log(shifts);
+
+                $('#shifts-table').bootstrapTable('load', shifts)
+            }
+        })
+
+    }
+
+    //initial call
+    getShifts(moment().subtract(1, 'month'), moment())
+
+    shiftsTable.on('check-all.bs.table', function (e, row) {
+        for (var i = 0; i < row.length; i++) {
+            selectedShifts.push({id: row[i].id, start: row[i].start, end: row[i].end, duration: row[i].duration})
+        }
+    })
+
+    shiftsTable.on('check.bs.table', function (e, row) {
+        selectedShifts.push({id: row.id, start: row.start, end: row.end, duration: row.duration});
+    })
+
+    shiftsTable.on('uncheck-all.bs.table', function (e, row) {
+        selectedShifts = [];
+    })
+
+    shiftsTable.on('uncheck.bs.table', function (e, row) {
+        $.each(selectedShifts, function (index, value) {
+            if (value.id === row.id) {
+                selectedShifts.splice(index, 1);
+            }
+        });
+    });
+
+    $('#mail-shifts').click(function () {
+        if (selectedShifts.length === 0) {
+            swal(
+                'No shifts selected!',
+                'Please select some shifts and try again.',
+                'warning'
+            ).catch(swal.noop)
+        } else {
+            swal({
+                title: 'Email is being assembled...',
+                text: 'Please be patient',
+                onOpen: () => {
+                    swal.showLoading()
+                }
+            });
+            $.ajax({
+                url: '{{route('shifts.sendmail')}}',
+                data: {id: '{{$user->id}}', shifts: selectedShifts},
+                method: 'post',
+                success: function () {
+                    swal(
+                        'Email sent to',
+                        '{{$user->first_name}} {{$user->last_name}}',
+                        'success'
+                    ).catch(swal.noop)
+                },
+                error: function (error) {
+                    swal(
+                        'Oops...',
+                        'Something went wrong! Please try again',
+                        'error'
+                    )
+                }
+            })
+        }
+    })
+
 </script>
