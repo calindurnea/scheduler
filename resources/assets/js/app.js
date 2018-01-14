@@ -5,9 +5,8 @@
  */
 
 window.Popper = require('popper.js').default;
-require('popper.js');
 
-require('bootstrap');
+require('./bootstrap');
 
 require('bootstrap-table/dist/bootstrap-table');
 
@@ -17,10 +16,12 @@ require('sweetalert2/dist/sweetalert2.all.min');
 
 require('jquery-color/jquery.color');
 
+require('bootstrap-colorpicker');
+
 window.Vue = require('vue');
 
-import axios from 'axios'
-
+var moment = require('moment');
+moment().format();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -42,7 +43,6 @@ const app = new Vue({
 
     created() {
         this.fetchMessages();
-
         Echo.private('chat')
             .listen('MessageSent', (e) => {
                 this.messages.push({
@@ -54,7 +54,7 @@ const app = new Vue({
 
     methods: {
         fetchMessages() {
-            axios.get('/messages').then(response => {
+            axios.get('/chat/messages').then(response => {
                 this.messages = response.data;
             });
         },
@@ -62,7 +62,7 @@ const app = new Vue({
         addMessage(message) {
             this.messages.push(message);
 
-            axios.post('/messages', message).then(response => {
+            axios.post('/chat/messages', message).then(response => {
                 console.log(response.data);
             });
         }
