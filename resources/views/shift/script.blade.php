@@ -114,7 +114,13 @@
                                         window.location.reload();
                                     },
                                     error: function (error) {
-                                        window.location.reload();
+                                        if (error.status === 422) {
+                                            error = error.responseJSON;
+                                            $.each(error, function (key, value) {
+                                                reject(value[0])
+                                            })
+                                        }
+
                                     }
                                 });
                             }

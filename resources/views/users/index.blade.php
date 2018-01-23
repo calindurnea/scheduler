@@ -2,13 +2,13 @@
 
 @section('content')
     @if(\Session::has('error'))
-        <div class="alert alert-danger col-md-2 pull-right">
+        <div class="alert alert-danger col-md-2 ">
             {{\Session::get('error')}}
         </div>
     @endif
     <h1 class="mt-4 center_title">Employees</h1>
     <div class="col-md-8 col-xs-12 col-sm-12 mt-4 mx-auto">
-        <table class="table table-bordered table-hover table-responsive employees-table">
+        <table class="table table-bordered table-hover employees-table">
             <thead class="thead-inverse">
             <tr>
                 <th>name</th>

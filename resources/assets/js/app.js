@@ -10,8 +10,6 @@ require('./bootstrap');
 
 require('bootstrap-table/dist/bootstrap-table');
 
-require('sweetalert/dist/sweetalert.min');
-
 require('sweetalert2/dist/sweetalert2.all.min');
 
 require('jquery-color/jquery.color');

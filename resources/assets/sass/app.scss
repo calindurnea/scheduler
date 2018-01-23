@@ -5,20 +5,16 @@
 //@import "variables";
 // Media queries
 @import "~sass-mediaqueries/media-queries";
-
 // Bootstrap
 @import "~bootstrap/scss/bootstrap.scss";
-
 //Bootstrap color-picker
 @import "~bootstrap-colorpicker/src/sass/_colorpicker.scss";
-
 // Bootstrap table
 @import "~bootstrap-table/dist/bootstrap-table.css";
 // Sweet alert
 //@import "~sweetalert/src/sweetalert.css";
 // Full calendar
 @import "~fullcalendar/dist/fullcalendar.css";
-
 
 #welcome-container {
   display: flex;

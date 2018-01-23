@@ -21,6 +21,7 @@
         $(this).colorpicker({
             // inline: true,
             // container: true,
+            format: 'hex',
             customClass: 'colorpicker-2x',
             sliders: {
                 saturation: {
@@ -44,7 +45,7 @@
         swal({
             title: 'Choose a color',
             html: '<div id="colorpicker" class="input-group colorpicker-component col-md-5 m-auto">' +
-            '<input id="color-picker-input" autofocus type="text" value="#00AABB" class="form-control" />' +
+            '<input id="color-picker-input" autofocus type="text" value="#00AABB" class="form-control input-lg" />' +
             '<span class="input-group-addon"><i></i></span>' +
             '</div><br>',
             showCancelButton: true,

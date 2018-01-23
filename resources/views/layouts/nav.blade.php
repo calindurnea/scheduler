@@ -6,6 +6,9 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         @guest
+            <li class="nav-item">
+                <a href="locacalhost:8000" class="nav-link">Home</a>
+            </li>
             @else
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('shifts.index')}}">Shifts</a>
