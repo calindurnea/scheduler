@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Color;
+use App\Message;
 use App\Role;
 use App\Shift;
 use App\User;
@@ -169,6 +170,7 @@ class UserController extends Controller
     {
         Shift::where('user_id', '=', $id)->delete();
         Color::where('user_id', '=', $id)->update(['user_id' => null]);
+        Message::where('user_id', '=', $id)->delete();
         User::find($id)->delete();
 
         return response()->json('Successfully deleted!', 200);
