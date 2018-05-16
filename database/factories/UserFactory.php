@@ -1,6 +1,5 @@
 <?php
 
-use App\Color;
 use Faker\Generator as Faker;
 
 /*

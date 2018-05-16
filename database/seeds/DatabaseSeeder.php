@@ -3,30 +3,40 @@
 use App\Color;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder {
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::statement("SET foreign_key_checks = 0");
 
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
-	public function run() {
-		// $this->call(UsersTableSeeder::class);
+        DB::table('users')->truncate();
+        DB::table('schedules')->truncate();
+        //DB::table('shifts')->truncate();
+        DB::table('role_user')->truncate();
 
-		DB::statement("SET foreign_key_checks = 0");
+        for ($i = 0; $i < 7; $i++) {
+            DB::table('schedules')->insert([
+                'dow' => $i,
+                'start' => rand(6,10).":00:00",
+                'duration' => rand(7, 14),
+            ]);
+        }
 
-//		DB::table('users')->truncate();
-//		DB::table('shifts')->truncate();
-//		DB::table('role_user')->truncate();
-//
-		factory(App\User::class, 5)->create();
-//		factory(App\Shift::class, 20)->create();
-//
-		App\User::all()->each(function($user) {
-			$color = Color::inRandomOrder();
+        factory(App\User::class, 5)->create()->each(function ($user) {
+            $user->roles()->attach(3);
+        });
 
-			$user->roles()->attach(3);
-//			$user->color()->save($color);
-		});
-	}
+        $admin = App\User::create([
+            'first_name' => 'Administrator',
+            'email' => 'admin@mail.dk',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
+        $admin->roles()->attach(1);
+    }
 }
