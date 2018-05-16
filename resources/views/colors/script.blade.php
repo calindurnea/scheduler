@@ -59,7 +59,7 @@
                     } else {
                         $.ajax({
                             url: "{{route('colors.store')}}",
-                            method: "POST",
+                            type: "POST",
                             data: {hexCode: colorInputVal},
                             success: function (response) {
                                 resolve(swal({

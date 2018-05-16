@@ -1,6 +1,8 @@
 <?php
 
 use App\Events\MessagePosted;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,16 +34,17 @@ Route::get('users/shifts', ['as' => 'users.getShifts', 'uses' => 'UserController
 Route::resource('users', 'UserController');
 
 Route::resource('users', 'UserController', [
-    'except' => ['index', 'show', 'getShifts']
+    'except' => ['index', 'show', 'getShifts'],
 ])->middleware('manager');
 
 //shifts
 Route::resource('shifts', 'ShiftController');
 
 Route::resource('shifts', 'ShiftController', [
-    'except' => ['index', 'show']
+    'except' => ['index', 'show'],
 ])->middleware('manager');
 
+Route::post('shifts/store', ['as' => 'shifts.store', 'uses' => 'ShiftController@store']);
 //colors
 Route::resource('colors', 'ColorController')->middleware('manager');
 
@@ -49,5 +52,5 @@ Route::resource('colors', 'ColorController')->middleware('manager');
 Route::resource('schedules', 'ScheduleController');
 
 Route::resource('schedules', 'ScheduleController', [
-    'except' => ['index', 'show']
+    'except' => ['index', 'show'],
 ])->middleware('manager');

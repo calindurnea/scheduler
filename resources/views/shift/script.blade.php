@@ -29,7 +29,7 @@
 
         $.ajax({
             url: "{{route("schedules.index")}}",
-            method: "GET",
+            type: "GET",
             success: function (response) {
                 response[0].map(function (item) {
                     return item.dow = [item.dow];
@@ -104,13 +104,13 @@
                             } else {
                                 $.ajax({
                                     url: "{{route("shifts.store")}}",
-                                    method: "POST",
+                                    type: "POST",
                                     data: {
                                         email: value,
                                         start: moment(start).format(),
                                         end: moment(end).format()
                                     },
-                                    success: function () {
+                                    success: function (response) {
                                         window.location.reload();
                                     },
                                     error: function (error) {
@@ -120,7 +120,6 @@
                                                 reject(value[0])
                                             })
                                         }
-
                                     }
                                 });
                             }
@@ -188,7 +187,7 @@
                                 } else {
                                     $.ajax({
                                         url: "shifts/" + calEvent.id,
-                                        method: "PUT",
+                                        type: "PUT",
                                         data: {
                                             email: value,
                                             start: moment(start).format(),
@@ -216,7 +215,7 @@
                         ).then(function () {
                             $.ajax({
                                 url: "shifts/" + calEvent.id,
-                                method: "delete",
+                                type: "delete",
                                 success: function () {
                                     window.location.reload();
                                 },

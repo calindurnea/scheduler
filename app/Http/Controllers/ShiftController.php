@@ -16,7 +16,6 @@ use Nexmo\Laravel\Facade\Nexmo;
 
 class ShiftController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +35,6 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -106,7 +104,7 @@ class ShiftController extends Controller
         request()->validate([
             'email' => 'required|email|max:255|exists:users,email',
             'start' => 'required|date',
-            'end' => 'required|date'
+            'end' => 'required|date',
         ]);
 
         $user = User::where('email', '=', $request->email)->first();
@@ -129,7 +127,7 @@ class ShiftController extends Controller
     {
         $this->validate($request, [
             'id' => 'required|integer|exists:users,id',
-            'shifts' => 'required|array'
+            'shifts' => 'required|array',
         ]);
 
         $user = User::findOrFail($request->id);
@@ -157,9 +155,9 @@ class ShiftController extends Controller
     public function sendSMS($number, $message, $start = null, $end = null)
     {
         Nexmo::message()->send([
-            'to' => '45' . $number,
-            'from' => '45' . Auth::user()->phone,
-            'text' => $message . ' ' . $start . ' - ' . $end
+            'to' => '45'.$number,
+            'from' => '45'.Auth::user()->phone,
+            'text' => $message.' '.$start.' - '.$end,
         ]);
     }
 }

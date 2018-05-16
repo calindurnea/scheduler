@@ -56,7 +56,6 @@
         @endmanagerOrAdmin
     </div>
 @endsection
-
 @section('pageScripts')
     @include('users.script')
 @stop

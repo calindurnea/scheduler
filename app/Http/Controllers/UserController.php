@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-
 //    public function __construct()
 //    {
 ////        $this->middleware('manager', ['except'=>'show', 'index']);
@@ -60,14 +59,14 @@ class UserController extends Controller
             'email' => 'sometimes|nullable|string|email|max:255|unique:users',
             'phone' => 'sometimes|nullable|numeric|digits:8|unique:users',
             'color' => 'required|integer',
-            'role' => 'required|numeric|min:2'
+            'role' => 'required|numeric|min:2',
         ]);
 
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'phone' => $request->phone,
-            'email' => $request->email ? $request->email : preg_replace('/\s+/', '', $request->first_name) . rand(999, 99999) . '@undefined.' . str_random(3),
+            'email' => $request->email ? $request->email : preg_replace('/\s+/', '', $request->first_name).rand(999, 99999).'@undefined.'.str_random(3),
             'password' => bcrypt($request->first_name),
         ]);
 
@@ -78,8 +77,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.create')
-            ->with('success', 'Employee added successfully!');
+        return redirect()->route('users.create')->with('success', 'Employee added successfully!');
     }
 
     /**
@@ -104,7 +102,7 @@ class UserController extends Controller
         request()->validate([
             'id' => 'required|integer|exists:users,id',
             'start' => 'required',
-            'end' => 'required'
+            'end' => 'required',
         ]);
 
         $user = User::find($request->id);
@@ -147,7 +145,7 @@ class UserController extends Controller
             'last_name' => 'sometimes|nullable|string|max:255',
             'email' => 'sometimes|nullable|string|email|max:255|unique:users,email,'.$id,
             'phone' => 'sometimes|nullable|numeric|digits:8|unique:users,phone,'.$id,
-            'role' => 'required|numeric|min:2'
+            'role' => 'required|numeric|min:2',
         ]);
 
         $user->fill($request->all())->save();

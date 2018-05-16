@@ -11,7 +11,7 @@
         }).then(function () {
             $.ajax({
                 url: '{{route('users.destroy', $user->id)}}',
-                method: 'delete',
+                type: 'delete',
                 success: function () {
                     window.location.href = "../users";
                 }
@@ -62,20 +62,21 @@
         $.ajax({
             url: '{{route('users.getShifts')}}',
             dataType: 'JSON',
-            method: 'get',
+            type: 'get',
             data: {
                 id: '{{$user->id}}',
                 start: inputStartDate,
                 end: inputEndDate
             },
             success: function (shifts) {
-                // console.log(shifts);
+                console.log(shifts);
 
-                $('#shifts-table').bootstrapTable('load', shifts)
+                $('#shifts-table').bootstrapTable('load', shifts);
             }
         })
 
     }
+
 
     //initial call
     getShifts(moment().subtract(1, 'month'), moment())
@@ -120,7 +121,7 @@
             $.ajax({
                 url: '{{route('shifts.sendmail')}}',
                 data: {id: '{{$user->id}}', shifts: selectedShifts},
-                method: 'post',
+                type: 'post',
                 success: function () {
                     swal(
                         'Email sent to',
@@ -138,5 +139,4 @@
             })
         }
     })
-
 </script>
